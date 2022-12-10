@@ -1,0 +1,782 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: API - Administração
+  description: CENTRALIZAÇÃO DE RESULTADOS MÉDICOS COM RECONHECIMENTO
+    INTELIGENTE DE DADOS
+  contact:
+    email: carlos.lucas@aluno.riogrande.ifrs.edu.br
+    name: Carlos Lucas
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://projetottc.test
+tags:
+  - name: Login
+    description: Login
+  - name: Laboratory
+    description: Laboratory
+  - name: Laboratoryexam
+    description: Laboratoryexam
+  - name: ReferenceValues
+    description: ReferenceValues
+
+components:
+  responses:
+    200:
+      description: "Successful operation"
+      content:
+        application/json:
+          schema:
+            # $ref: object
+            type: object
+    204:
+      description: "No Content"
+      content:
+        application/json:
+          schema:
+            # $ref: object
+            type: object
+    400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Bad Request
+                example: Bad Request
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Unauthenticated
+                example: Unauthenticated
+    403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Forbidden
+    404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Not Found
+    422:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The password field is required.
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    password:
+                      type: string
+                      example: The password field is required.
+
+    500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Server Error
+    ResponseDefault:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            type: object
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+      required:
+        - code
+    LaboratoryExam:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+          format: integer
+          example: 1
+        exam:
+          type: string
+          nullable: false
+          format: string
+          example: Creatinina
+        description:
+          type: string
+          nullable: false
+          format: string
+          example: A creatinina é um catabólito da creatinina muscular...
+        material:
+          type: string
+          nullable: true
+          format: string
+          example: sangue
+        method:
+          type: string
+          nullable: true
+          format: string
+          example: Colorimetrico
+        use:
+          type: string
+          nullable: true
+          format: string
+          example: xxxx
+        bibliography:
+          type: string
+          nullable: true
+          format: string
+          example: http://www.site.com
+      required:
+        - exam
+        - description
+    Laboratory:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+          format: integer
+          example: 1
+        name:
+          type: string
+          nullable: false
+          example: Laboratorio XYZ
+        phone:
+          type: string
+          nullable: true
+          example: 53 3233-3333
+      required:
+        - id
+        - name
+    LoginSchema:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: false
+          format: string
+          example: email@company.com
+        password:
+          type: string
+          nullable: false
+          format: string
+          example: password
+        device_name:
+          type: string
+          nullable: false
+          format: string
+          example: laptop
+      required:
+        - email
+        - password
+        - device_name
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+
+paths:
+  /api/v1/laboratoryexams:
+    post:
+      description: ""
+      parameters: []
+      tags:
+        - Laboratoryexam
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LaboratoryExam"
+    get:
+      description: ""
+      parameters: []
+      tags:
+        - Laboratoryexam
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+  /api/v1/laboratoryexams/{laboratoryexam}:
+    delete:
+      description: ""
+      parameters:
+        - name: laboratoryexam
+          in: path
+          required: true
+          description: Parameter ID primary key
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      tags:
+        - Laboratoryexam
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LaboratoryExam"
+    get:
+      description: ""
+      parameters:
+        - name: laboratoryexam
+          in: path
+          required: true
+          description: Parameter ID primary key
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      tags:
+        - Laboratoryexam
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+    put:
+      description: ""
+      parameters:
+        - name: laboratoryexam
+          in: path
+          required: true
+          description: Parameter ID primary key
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      tags:
+        - Laboratoryexam
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LaboratoryExam"
+  /api/v1/laboratories:
+    post:
+      description: ""
+      parameters: []
+      tags:
+        - Laboratory
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: "Successful operationn"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Laboratory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Laboratory"
+    get:
+      description: ""
+      parameters: []
+      tags:
+        - Laboratory
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Successful operationn"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                    $ref: "#/components/schemas/Laboratory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+  /api/v1/laboratories/{laboratory}:
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Parameter ID primary key
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      tags:
+        - Laboratory
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          $ref: "#/components/responses/204"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+    get:
+      description: ""
+      parameters:
+        - name: laboratory
+          in: path
+          required: true
+          description: Parameter ID primary key
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      tags:
+        - Laboratory
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Successful operationn"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                    $ref: "#/components/schemas/Laboratory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+
+    put:
+      description: ""
+      parameters:
+        - name: laboratory
+          in: path
+          required: true
+          description: Parameter ID primary key
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      tags:
+        - Laboratory
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Successful operationn"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                    $ref: "#/components/schemas/Laboratory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Laboratory"
+  /api/v1/login:
+    post:
+      description: ""
+      parameters: []
+      tags:
+        - Login
+      responses:
+        "200":
+          description: "Successful operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: 5|wggDxE2lqwPWXfl0jI5m5Xokf2A7J6u0ILimRoBg
+                  status:
+                    type: boolean
+                    example: true
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginSchema"
+  /api/v1/logout:
+    post:
+      description: ""
+      parameters: []
+      tags:
+        - Login
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+
+  /api/v1/referencevalues:
+    post:
+      description: ""
+      parameters: []
+      tags:
+        - ReferenceValues
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+    get:
+      description: ""
+      parameters: []
+      tags:
+        - ReferenceValues
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+  /api/v1/referencevalues/{referencevalue}:
+    delete:
+      description: ""
+      parameters: []
+      tags:
+        - ReferenceValues
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+    get:
+      description: ""
+      parameters: []
+      tags:
+        - ReferenceValues
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+    put:
+      description: ""
+      parameters: []
+      tags:
+        - ReferenceValues
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "422":
+          $ref: "#/components/responses/422"
+        "500":
+          $ref: "#/components/responses/500"
+        default:
+          $ref: "#/components/responses/ResponseDefault"
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
